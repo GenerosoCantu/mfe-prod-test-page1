@@ -35,20 +35,16 @@ module.exports = (_, argv) => ({
 
   plugins: [
     new ModuleFederationPlugin({
-      name: "consumer",
+      name: "page1",
       filename: "remoteEntry.js",
       remotes: {
-        header: argv.mode === "development"
-          ? "header@http://localhost:8080/remoteEntry.js"
-          : "header@https://mfe-prod-test-shared.vercel.app/remoteEntry.js",
-        footer: argv.mode === "development"
-          ? "footer@http://localhost:8080/remoteEntry.js"
-          : "footer@https://mfe-prod-test-shared.vercel.app/remoteEntry.js",
-        menu: argv.mode === "development"
-          ? "menu@http://localhost:8080/remoteEntry.js"
-          : "menu@https://mfe-prod-test-shared.vercel.app/remoteEntry.js",
+        shared: argv.mode === "development"
+          ? "shared@http://localhost:8100/remoteEntry.js"
+          : "shared@https://mfe-prod-test-shared.vercel.app/remoteEntry.js",
       },
-      exposes: {},
+      exposes: {
+        "./Page1": "./src/Page1",
+      },
       shared: require("./package.json").dependencies,
     }),
     new HtmlWebPackPlugin({
